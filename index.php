@@ -2,7 +2,7 @@
 <!-- http://localhost/index.php -->
 <?php
 /**     --[[PREAMBLE]]--    **/
-require_once("helperLib.php");
+require_once("lib.php");
 
 $ERRORCHECK = true; //set false for release version
 if($ERRORCHECK)    {

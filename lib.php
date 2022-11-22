@@ -10,7 +10,7 @@ function writeHeaders($Heading, $Village="GV Manager")
 <head>
 	<meta charset = \"UTF-8\">
 	<title>$Village</title>\n
-	<link rel =\"stylesheet\" type = \"text/css\" href=\"gvStyle.css\"/>
+	<link rel =\"stylesheet\" type = \"text/css\" href=\"style.css\"/>
 </head>
 <body>\n<form action=? method=\"post\">
 <div class=\"outer\">
