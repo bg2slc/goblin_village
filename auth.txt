@@ -1,0 +1,5 @@
+localhost
+gobbo
+tryhard
+gvDB
+3306

@@ -1,0 +1,75 @@
+/* style.css for Sunglasses Database assignment, COMP220
+ * By Benjamin Garrett
+ */
+
+body {
+    color: #f28705; /** orange-ish, main text colour **/
+    background-color: #2e038c; /** deep blue, main background colour **/
+    font-size: 1.2em;
+}
+
+h1,h2,h3,h4,h5  {
+    color: #f20587; /** pinkish, main emphasis and logo colour **/
+}
+
+input[type="text"], textarea {
+    background-color: #f2b705; /** yellow gold, input background**/
+    font-size: 1.2em;
+}
+
+div {
+    border-left-width: 1px;
+    border-color: #bf3604; /** ruddy brown, border line colour **/
+}
+
+a:link   {
+    color: #f20587;
+}
+
+a:visited   {
+    color: #bf3604;
+}
+
+button  {
+    margin: 0.2em;
+    background-color: #f20587;
+}
+
+table, th, td   {
+    border: 1px solid #bf3604;
+    border-collapse: collapse;
+    padding: 0.2em;
+}
+
+.buttonBar  {
+    display: flex;
+    flex-direction: row;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+}
+
+div.outer    {
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 0;
+}
+
+div.mainHeader  {
+    background-color: #ffffff44;
+    border: 2px solid #bb6666;
+    border-bottom: 0;
+    padding-bottom: 0.2em;
+}
+
+div.mainBody    {
+    border: 2px solid #bb6666;
+}
+
+div.bordered   {
+    border: 1px solid #bf3604;
+    padding: 0.4em;
+}
+
+div.control    {
+    padding: 0.4em;
+}
