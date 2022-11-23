@@ -11,7 +11,18 @@ if($ERRORCHECK)    {
 }
 
 /**     --[[HELPER FUNCTIONS]]--**/
+function writeMenuBegin($ButtonLabel) {
+    echo "
+    <div class=\"dropdown\">
+    <button class=\"dropbtn\" type=\"button\">$ButtonLabel</button>
+    <div class=\"dropdown-content\">";
+}
 
+function writeMenuEnd() {
+    echo "
+    </div>
+    </div>";
+}
 
 /**     --[[FORMS]]--**/
 function selectVillageForm($mysql)    {
@@ -29,9 +40,13 @@ function selectVillageForm($mysql)    {
         <table>
             <tr><th>Name</th><th>Population</th><th>Number of Weeks</th><th>Last Played</th></tr>";
         while ($stmt->fetch())  {
-
             echo "
-            <tr><td>$vName</td><td style=\"text-align:right\">$vPop</td><td style=\"text-align:right\">" . yearsAndWeeks($vAge) . "</td><td>$vMod</td></tr>";
+            <tr><td>$vName</td><td style=\"text-align:right\">$vPop</td><td style=\"text-align:right\">" . yearsAndWeeks($vAge) . "</td><td>$vMod</td><td>";
+            writeMenuBegin("Select");
+            displayButton('f_Village',"Open",$vName);
+            writeMenuEnd();
+            echo "
+            </td></tr>";
         }
         echo "
         </table>";
@@ -41,22 +56,6 @@ function selectVillageForm($mysql)    {
     }
 }
 
-function yearsAndWeeks($numOfWeeks)    {
-    $message = "";
-    if($numOfWeeks > 52)    {
-        $numOfYears = intdiv($numOfWeeks, 52);
-        $numOfWeeks = $numOfWeeks % 52;
-        if($numOfYears == 1)
-            $message = "1 year, ";
-        else
-            $message = "" . $numOfYears . " years, ";
-    }
-    if($numOfWeeks == 1)
-        $message = $message . "1 week";
-    else
-        $message = $message . $numOfWeeks . " weeks";
-    return $message;
-}
 
 function villageOverviewForm()  {
 
@@ -81,12 +80,10 @@ function getVillageList($mysql)   {
 /**     --[[MAIN]]--    **/
 date_default_timezone_set('America/Toronto');
 $mysqlObj = createConnectionObject();
-if(isset($_POST['f_Village']))
+if(isset($_POST['f_Village'])) {
     $Village = $_POST['f_Village'];
-
-//HEADER
-if(isset($Village))
     writeHeaders("Goblin Village Manager", $Village);
+}
 else
     writeHeaders("Goblin Village Manager");
 

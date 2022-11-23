@@ -1,16 +1,18 @@
 <?php
-//In Class Include File
+//Include File
 //By Benjamin Garrett
-//Contains helper functions for use in COMP220 assignments.
+//Contains helper functions
 
-function writeHeaders($Heading, $Village="GV Manager")
+/** ++++++++++++ DOCUMENT WRITING **/
+function writeHeaders($Heading, $Village="Goblin Village Manager")
 {
     echo "<!doctype html>
 <html>
 <head>
 	<meta charset = \"UTF-8\">
 	<title>$Village</title>\n
-	<link rel =\"stylesheet\" type = \"text/css\" href=\"style.css\"/>
+    <link rel =\"stylesheet\" type = \"text/css\" href=\"style.css\" />
+    <link rel=\"icon\" type=\"image/x-icon\" href=\"/images/gobicon.ico\" />
 </head>
 <body>\n<form action=? method=\"post\">
 <div class=\"outer\">
@@ -48,7 +50,7 @@ function displayImage($FileName, $Alt="Alternate Text Here",
         width=\"$Width\"/>\n";
 }
 
-function displayButton($Name, $Text="Button", $FileName="", $Alt="")
+function displayButton($Name, $Text="Button", $Value="")
 {
     echo "<div>";
 /*    if ($FileName!="") 
@@ -57,8 +59,11 @@ function displayButton($Name, $Text="Button", $FileName="", $Alt="")
         echo "\n<input type=image src=\"$FileName\" name=\"$Name\"
             submit=\"$Name\" alt=\"$Text\" />";
     }
-    else*/
+else*/
+    if ($Value=="")
         echo "\n<button type=Submit name=\"$Name\">$Text</button>";
+    else
+        echo "\n<button type=Submit name=\"$Name\" value=\"$Value\">$Text</button>";
     echo "</div>\n";
 }
 
@@ -72,6 +77,7 @@ function writeFooters()
 </html>";
 }
 
+/** ++++++++++++ MYSQL **/
 function createConnectionObject()
 {
     $fh = fopen('auth.txt','r');
@@ -95,6 +101,24 @@ function createConnectionObject()
         exit;
     }
     return ($mysqlObj);
+}
+
+/** ++++++++++++ SRTING MANIP **/
+function yearsAndWeeks($numOfWeeks)    {
+    $message = "";
+    if($numOfWeeks > 52)    {
+        $numOfYears = intdiv($numOfWeeks, 52);
+        $numOfWeeks = $numOfWeeks % 52;
+        if($numOfYears == 1)
+            $message = "1 year, ";
+        else
+            $message = "" . $numOfYears . " years, ";
+    }
+    if($numOfWeeks == 1)
+        $message = $message . "1 week";
+    else
+        $message = $message . $numOfWeeks . " weeks";
+    return $message;
 }
 
 ?>
