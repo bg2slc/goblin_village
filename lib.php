@@ -52,19 +52,13 @@ function displayImage($FileName, $Alt="Alternate Text Here",
 
 function displayButton($Name, $Text="Button", $Value="")
 {
-    echo "<div>";
-/*    if ($FileName!="") 
-    {
-        //displayImage($FileName, $Alt);
-        echo "\n<input type=image src=\"$FileName\" name=\"$Name\"
-            submit=\"$Name\" alt=\"$Text\" />";
-    }
-else*/
+    //echo "<div>";
     if ($Value=="")
-        echo "\n<button type=Submit name=\"$Name\">$Text</button>";
+        echo "<button type=Submit name=\"$Name\">$Text</button>";
     else
-        echo "\n<button type=Submit name=\"$Name\" value=\"$Value\">$Text</button>";
-    echo "</div>\n";
+        echo "<button type=Submit name=\"$Name\" value=\"$Value\">$Text" .
+        "</button>";
+    //echo "</div>";
 }
 
 function writeFooters()

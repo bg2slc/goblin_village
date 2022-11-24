@@ -11,22 +11,21 @@ if($ERRORCHECK)    {
 }
 
 /**     --[[HELPER FUNCTIONS]]--**/
-function writeMenuBegin($ButtonLabel) {
+function writeSelectVillageDropButton($vName) {
     echo "
+    <!-- select button for $vName -->
     <div class=\"dropdown\">
-    <button class=\"dropbtn\" type=\"button\">$ButtonLabel</button>
-    <div class=\"dropdown-content\">";
-}
-
-function writeMenuEnd() {
+        <button class=\"dropbtn\" type=\"button\">Select</button>
+        <div class=\"dropdown-content\">
+            ";
+    displayButton('f_Village', "Open", $vName);
     echo "
-    </div>
+        </div>
     </div>";
 }
 
 /**     --[[FORMS]]--**/
 function selectVillageForm($mysql)    {
-
     //Form presents villages in order of most recently modified by default.
     writePageTitle("Village Selection");
     try {
@@ -42,9 +41,7 @@ function selectVillageForm($mysql)    {
         while ($stmt->fetch())  {
             echo "
             <tr><td>$vName</td><td style=\"text-align:right\">$vPop</td><td style=\"text-align:right\">" . yearsAndWeeks($vAge) . "</td><td>$vMod</td><td>";
-            writeMenuBegin("Select");
-            displayButton('f_Village',"Open",$vName);
-            writeMenuEnd();
+            writeSelectVillageDropButton($vName);
             echo "
             </td></tr>";
         }
