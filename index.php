@@ -19,9 +19,16 @@ function writeSelectVillageDropButton($vName) {
         <div class=\"dropdown-content\">
             ";
     displayButton('f_Village', "Open", $vName);
+    displayButton('f_Village_Copy', "Copy", $vName);
+    displayButton('f_Village_Burn', "Burn", $vName);
     echo "
         </div>
     </div>";
+}
+
+function writeBannerMessage($Text)  {
+    echo "
+    <div class=\"bannerMessage\">$Text</div>";
 }
 
 /**     --[[FORMS]]--**/
@@ -81,11 +88,8 @@ if(isset($_POST['f_Village'])) {
     $Village = $_POST['f_Village'];
     writeHeaders("Goblin Village Manager", $Village);
 }
-else
+else {
     writeHeaders("Goblin Village Manager");
-
-if($ERRORCHECK) {
-    //write error stuff here, maybe?
 }
 
 //BODY
@@ -96,6 +100,13 @@ if($ERRORCHECK) {
  *  GROUNDS - Different zones, landmarks, and neighbourhoods.
  *  MARTIAL - Guards, solders, and goblin law enforcement.
  */
+
+if(isset($_POST['f_sqlQuery'])) {
+    //TODO try a mysql query here
+    //output success or error message here.
+    writeBannerMessage($results);
+}
+
 if(isset($_POST['f_Village']))  {
     if(isset($_POST['f_Goblins']))  {
         villageGoblinsForm($mysqlObj);
@@ -114,7 +125,12 @@ if(isset($_POST['f_Village']))  {
     }
 }
 else    {
-    selectVillageForm($mysqlObj); //Main
+    if(isset($_POST['f_Village_Copy'])) {
+        selectVillageForm($mysqlObj); //Main
+    }
+    else    {
+        selectVillageForm($mysqlObj); //Main
+    }
 }
 
 if(isset($mysqlObj)) $mysqlObj->close();

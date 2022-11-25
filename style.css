@@ -57,12 +57,12 @@ div.outer    {
 div.mainHeader  {
     background-color: #ffffff44;
     border: 2px solid #bb6666;
-    border-bottom: 0;
     padding-bottom: 0.2em;
 }
 
 div.mainBody    {
     border: 2px solid #bb6666;
+    border-top-width: 0px;
 }
 
 div.bordered   {
@@ -72,6 +72,13 @@ div.bordered   {
 
 div.control    {
     padding: 0.4em;
+}
+
+div.bannerMessage   {
+    margin: 0px;
+    background-color: maroon;
+    color: #F3E5AB;
+    text-align: center;
 }
 
 /* DROPBTN */
