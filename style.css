@@ -76,9 +76,18 @@ div.control    {
 
 div.bannerMessage   {
     margin: 0px;
-    background-color: maroon;
     color: #F3E5AB;
     text-align: center;
+    background-color: #00000055;
+    border-bottom: 2px solid #bb6666;
+}
+
+div.redMessage  {
+    background-color: maroon;
+}
+
+div.greenMessage {
+    background-color: turquoise;
 }
 
 /* DROPBTN */

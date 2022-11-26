@@ -14,7 +14,7 @@ function writeHeaders($Heading, $Village="Goblin Village Manager")
     <link rel =\"stylesheet\" type = \"text/css\" href=\"style.css\" />
     <link rel=\"icon\" type=\"image/x-icon\" href=\"/images/gobicon.ico\" />
 </head>
-<body>\n<form action=? method=\"post\">
+<body>\n
 <div class=\"outer\">
     <div class=\"mainHeader\">
         <h1>$Village</h1>

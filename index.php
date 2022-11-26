@@ -11,24 +11,42 @@ if($ERRORCHECK)    {
 }
 
 /**     --[[HELPER FUNCTIONS]]--**/
-function writeSelectVillageDropButton($vName) {
+function writeSelectVillageDropButton($vName, $vId) {
     echo "
-    <!-- select button for $vName -->
-    <div class=\"dropdown\">
-        <button class=\"dropbtn\" type=\"button\">Select</button>
-        <div class=\"dropdown-content\">
-            ";
+            <!-- select button for $vName -->
+            <div class=\"dropdown\">
+            <form action=? method=\"post\">
+                <button class=\"dropbtn\" type=\"button\">Select</button>
+                <div class=\"dropdown-content\">
+                <input type=\"hidden\" name=\"openVillId\" value=\"$vId\">
+                    ";
     displayButton('f_Village', "Open", $vName);
     displayButton('f_Village_Copy', "Copy", $vName);
     displayButton('f_Village_Burn', "Burn", $vName);
-    echo "
-        </div>
-    </div>";
+            echo "
+                </div>
+            </form>
+            </div>";
 }
 
-function writeBannerMessage($Text)  {
-    echo "
-    <div class=\"bannerMessage\">$Text</div>";
+function writeBannerMessage($Text = "", $isError = 0)  {
+    if ($Text=="") {
+        echo "
+        <div class=\"bannerMessage\">";
+        var_dump($_POST);
+        echo "</div>";
+    }
+    else
+    {
+        if($isError)    {
+            echo "
+            <div class=\"bannerMessage redMessage\">$Text</div>";
+        }
+        else    {
+            echo "
+            <div class=\"bannerMessage greenMessage\">$Text</div>";
+        }
+    }
 }
 
 /**     --[[FORMS]]--**/
@@ -48,7 +66,7 @@ function selectVillageForm($mysql)    {
         while ($stmt->fetch())  {
             echo "
             <tr><td>$vName</td><td style=\"text-align:right\">$vPop</td><td style=\"text-align:right\">" . yearsAndWeeks($vAge) . "</td><td>$vMod</td><td>";
-            writeSelectVillageDropButton($vName);
+            writeSelectVillageDropButton($vName, $vId);
             echo "
             </td></tr>";
         }
@@ -100,7 +118,9 @@ else {
  *  GROUNDS - Different zones, landmarks, and neighbourhoods.
  *  MARTIAL - Guards, solders, and goblin law enforcement.
  */
-
+if($ERRORCHECK) {
+    writeBannerMessage();
+}
 if(isset($_POST['f_sqlQuery'])) {
     //TODO try a mysql query here
     //output success or error message here.
