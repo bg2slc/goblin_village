@@ -54,10 +54,10 @@ function displayButton($Name, $Text="Button", $Value="")
 {
     //echo "<div>";
     if ($Value=="")
-        echo "<button type=Submit name=\"$Name\">$Text</button>";
+        echo "<button class=\"dis\" type=Submit name=\"$Name\">$Text</button>";
     else
-        echo "<button type=Submit name=\"$Name\" value=\"$Value\">$Text" .
-        "</button>";
+        echo "<button class=\"dis\" type=Submit name=\"$Name\" " .
+            "value=\"$Value\">$Text" . "</button>";
     //echo "</div>";
 }
 

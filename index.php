@@ -20,15 +20,15 @@ function writeSelectVillageDropButton($vName, $vId) {
                 <div class=\"dropdown-content\">
                 <input type=\"hidden\" name=\"openVillId\" value=\"$vId\">
                     ";
-    displayButton('f_Village', "Open", $vName);
-    displayButton('f_Village_Copy', "Copy", $vName);
-    displayButton('f_Village_Burn', "Burn", $vName);
             echo "
                 </div>
             </form>
             </div>";
 }
 
+/** Writes banner div. First parameter is message to write, second is whether
+ * it is an error. If no parameters are passed, dumps the POST data.
+ */
 function writeBannerMessage($Text = "", $isError = 0)  {
     if ($Text=="") {
         echo "
@@ -50,7 +50,7 @@ function writeBannerMessage($Text = "", $isError = 0)  {
 }
 
 /**     --[[FORMS]]--**/
-function selectVillageForm($mysql)    {
+/*function selectVillageForm($mysql)    {
     //Form presents villages in order of most recently modified by default.
     writePageTitle("Village Selection");
     try {
@@ -62,10 +62,13 @@ function selectVillageForm($mysql)    {
         $result = $stmt->execute();
         echo "
         <table>
-            <tr><th>Name</th><th>Population</th><th>Number of Weeks</th><th>Last Played</th></tr>";
+            <tr><th>Name</th><th>Population</th><th>Number of Weeks</th>
+                <th>Last Played</th></tr>";
         while ($stmt->fetch())  {
             echo "
-            <tr><td>$vName</td><td style=\"text-align:right\">$vPop</td><td style=\"text-align:right\">" . yearsAndWeeks($vAge) . "</td><td>$vMod</td><td>";
+            <tr><td>$vName</td><td style=\"text-align:right\">$vPop</td><td 
+                style=\"text-align:right\">" . yearsAndWeeks($vAge) . "</td>
+                <td>$vMod</td><td>";
             writeSelectVillageDropButton($vName, $vId);
             echo "
             </td></tr>";
@@ -76,8 +79,51 @@ function selectVillageForm($mysql)    {
     catch(Exception $e)  {
         echo "<p><em>ERROR: " . $e->getMessage() . "</em></p>\n";
     }
+} */
+function selectVillageForm($mysql)    {
+    //Form presents villages in order of most recently modified by default.
+    writePageTitle("Village Selection");
+    try {
+        $stmt = $mysql->prepare("
+            SELECT villId, villName, villDesc, villPop, villAge, 
+                villLastModified, terrainId
+            FROM Villages
+            ORDER BY villLastModified DESC");
+        $stmt->bind_result($vId, $vName, $vDesc, $vPop, $vAge, $vMod, 
+            $vTerrain);
+        $result = $stmt->execute();
+        //Begin writing display for each village
+        while ($stmt->fetch())  {
+            echo "
+            <form action=? method=\"post\">
+            <div class=\"villageSelection\">
+            <input type=\"hidden\" name=\"villId\" value=\"$vId\" \>
+                <img src=\"images/thumb_fight.png\" height=\"200\" " .
+                    "width=\"200\" \>
+                <div class=\"villageSelectionBlurb\">
+                    <p><em>$vName</em></p>
+                    <p>Play Time: " . yearsAndWeeks($vAge) . "</p>
+                    <p>Last Modified: $vMod</p>
+                    <p>$vDesc</p>
+                </div>
+                <div class=\"villageSelectionButtons\">";
+            displayButton('f_Village', "Open", $vName);
+            displayButton('f_Village_Copy', "Copy", $vName);
+            displayButton('f_Village_Burn', "Burn", $vName);
+            echo "
+                </div>
+            </div>
+            </form>";
+        }
+    }
+    catch(Exception $e)  {
+        echo "<p><em>ERROR: " . $e->getMessage() . "</em></p>\n";
+    }
 }
 
+function selectVillageBurnForm()    {
+    
+}
 
 function villageOverviewForm()  {
 
@@ -147,6 +193,9 @@ if(isset($_POST['f_Village']))  {
 else    {
     if(isset($_POST['f_Village_Copy'])) {
         selectVillageForm($mysqlObj); //Main
+    }
+    if(isset($_POST['f_Village_Burn'])) {
+        selectVillageBurnForm($mysqlObj);
     }
     else    {
         selectVillageForm($mysqlObj); //Main

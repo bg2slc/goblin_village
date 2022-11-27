@@ -35,6 +35,10 @@ button  {
     background-color: #f20587;
 }
 
+button.dis  {
+    width: 100%;
+}
+
 table, th, td   {
     border: 1px solid #bf3604;
     border-collapse: collapse;
@@ -60,6 +64,8 @@ div.mainHeader  {
     padding-bottom: 0.2em;
 }
 
+
+
 div.mainBody    {
     border: 2px solid #bb6666;
     border-top-width: 0px;
@@ -72,6 +78,29 @@ div.bordered   {
 
 div.control    {
     padding: 0.4em;
+}
+
+div.villageSelection    {
+    border: 2px solid #bb6666;
+    padding: 1em;
+    margin: 1em;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+div.villageSelectionBlurb {
+    /*text-align: right;*/
+    width: 100%;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+div.villageSelectionButtons {
+    width: 80px;
+    padding: 5px;
+    margin: 5px;
 }
 
 div.bannerMessage   {

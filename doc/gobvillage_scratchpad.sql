@@ -5,6 +5,8 @@ USE gvDB;
 CREATE TABLE Villages	(
     villId          INT         PRIMARY KEY,
     villName        VARCHAR(20),
+    villCreator		VARCHAR(20),
+    terrainId		INT,		-- FK
     villDesc        VARCHAR(40),
     villPop         INT,
     villAge         INT,        -- in number of in-game weeks
@@ -12,15 +14,20 @@ CREATE TABLE Villages	(
 );
 
 INSERT INTO Villages VALUES
-(1, "alpha", "description about alpha", 80, 7, "1212-12-12"),
-(2, "bravo", "bravo description", 90, 16, "1212-12-15"),
-(3, "charlie", "some charlie describos", 70, 54, "1212-12-01");
+(1, "alpha", "wydamn", 1, "description about alpha", 80, 7, "1212-12-12"),
+(2, "bravo", "wydamn", 1, "bravo description", 90, 16, "1212-12-15"),
+(3, "charlie", "wydamn", 1, "some charlie describos", 70, 54, "1212-12-01");
 
 CREATE TABLE Goblins     (
     gobId       INT     PRIMARY KEY,
     villId      INT,            -- FK
     gobName     VARCHAR(18),
     roleId      INT             -- FK
+);
+
+CREATE TABLE Terrains	(
+	terrainID	INT			PRIMARY KEY,
+    terrainName	VARCHAR(12)
 );
 
 -- CREATE TABLE GoblinProfiles  {
