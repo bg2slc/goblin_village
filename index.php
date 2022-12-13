@@ -50,51 +50,33 @@ function writeBannerMessage($Text = "", $isError = 0)  {
 }
 
 /**     --[[FORMS]]--**/
-/*function selectVillageForm($mysql)    {
-    //Form presents villages in order of most recently modified by default.
-    writePageTitle("Village Selection");
-    try {
-        $stmt = $mysql->prepare("
-            SELECT villId, villName, villDesc, villPop, villAge, villLastModified 
-            FROM Villages
-            ORDER BY villLastModified DESC");
-        $stmt->bind_result($vId, $vName, $vDesc, $vPop, $vAge, $vMod);
-        $result = $stmt->execute();
-        echo "
-        <table>
-            <tr><th>Name</th><th>Population</th><th>Number of Weeks</th>
-                <th>Last Played</th></tr>";
-        while ($stmt->fetch())  {
-            echo "
-            <tr><td>$vName</td><td style=\"text-align:right\">$vPop</td><td 
-                style=\"text-align:right\">" . yearsAndWeeks($vAge) . "</td>
-                <td>$vMod</td><td>";
-            writeSelectVillageDropButton($vName, $vId);
-            echo "
-            </td></tr>";
-        }
-        echo "
-        </table>";
-    }
-    catch(Exception $e)  {
-        echo "<p><em>ERROR: " . $e->getMessage() . "</em></p>\n";
-    }
-} */
 function selectVillageForm($mysql)    {
     //Form presents villages in order of most recently modified by default.
     writePageTitle("Village Selection");
     try {
-        $stmt = $mysql->prepare("
+        $vId = 0; $vName = null; $vDesc = null; $vPop = 0; $vAge = 0;
+        $vMod = 0; $vTerrain = 0;
+        $query = '
             SELECT villId, villName, villDesc, villPop, villAge, 
                 villLastModified, terrainId
             FROM Villages
-            ORDER BY villLastModified DESC");
+            ORDER BY villLastModified DESC';
+        $stmt = $mysql->prepare($query);
         $stmt->bind_result($vId, $vName, $vDesc, $vPop, $vAge, $vMod, 
             $vTerrain);
-        $result = $stmt->execute();
+        if(!$stmt->execute())
+            throw new Exception('unable to execute mysql statement');
         //Begin writing display for each village
         while ($stmt->fetch())  {
-            echo "
+            writeVillageSelection($vId, $vName, $vAge, $vMod, $vDesc);
+        }
+    } catch(Exception $e)  {
+        echo "<p><em>ERROR: " . $e->getMessage() . "</em></p>\n";
+    }
+}
+
+function writeVillageSelection($vId, $vName, $vAge, $vMod, $vDesc, $Burn = false)    {
+    echo "
             <form action=? method=\"post\">
             <div class=\"villageSelection\">
             <input type=\"hidden\" name=\"villId\" value=\"$vId\" \>
@@ -107,23 +89,46 @@ function selectVillageForm($mysql)    {
                     <p>$vDesc</p>
                 </div>
                 <div class=\"villageSelectionButtons\">";
-            displayButton('f_Village', "Open", $vName);
-            displayButton('f_Village_Copy', "Copy", $vName);
-            displayButton('f_Village_Burn', "Burn", $vName);
-            echo "
+    if (!$Burn) {
+        displayButton('f_Village', "Open", $vId);
+        displayButton('f_Village_Copy', "Copy", $vId);
+        displayButton('f_Village_Burn', "Burn", $vId);
+    }
+    else    {
+        displaybutton('f_ConfirmBurn', "Confirm", $vId);
+        displaybutton('', "Cancel");
+    }
+    echo "
                 </div>
             </div>
             </form>";
+}
+
+function selectVillageBurnForm($mysql)    {
+    writePageTitle("Confirm?", "Once burned, it cannot be un-burned");
+    try {
+        $vId = $_POST['f_Village_Burn'];
+        $vName = null; $vDesc = null; $vPop = 0; $vAge = 0;
+        $vMod = 0; $vTerrain = 0;
+        $query = '
+            SELECT villName, villDesc, villPop, villAge, villLastModified, terrainId
+            FROM Villages
+            WHERE villId = ' . $vId;
+        $stmt = $mysql->prepare($query);
+        $stmt->bind_result($vName, $vDesc, $vPop, $vAge, $vMod, 
+            $vTerrain);
+        if(!$stmt->execute())
+            throw new Exception('unable to execute mysql statement');
+        //Begin writing display for each village
+        while ($stmt->fetch())  {
+            writeVillageSelection($vId, $vName, $vAge, $vMod, $vDesc, true);
         }
-    }
-    catch(Exception $e)  {
+    } catch(Exception $e)  {
         echo "<p><em>ERROR: " . $e->getMessage() . "</em></p>\n";
     }
 }
 
-function selectVillageBurnForm()    {
-    
-}
+function 
 
 function villageOverviewForm()  {
 
@@ -196,6 +201,9 @@ else    {
     }
     if(isset($_POST['f_Village_Burn'])) {
         selectVillageBurnForm($mysqlObj);
+    }
+    if(isset($_POST['f_ConfirmBurn'])) {
+        
     }
     else    {
         selectVillageForm($mysqlObj); //Main

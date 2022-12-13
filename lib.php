@@ -4,8 +4,7 @@
 //Contains helper functions
 
 /** ++++++++++++ DOCUMENT WRITING **/
-function writeHeaders($Heading, $Village="Goblin Village Manager")
-{
+function writeHeaders($Heading, $Village="Goblin Village Manager")  {
     echo "<!doctype html>
 <html>
 <head>
@@ -25,33 +24,31 @@ function writeHeaders($Heading, $Village="Goblin Village Manager")
     ";
 }
 
-function writePageTitle($Title) {
+function writePageTitle($Title, $SubTitle = "") {
     echo "<h1>$Title</h1>\n";
+    if($SubTitle!="")
+        echo "\t<h2>$SubTitle</h2>\n";
 }
 
-function displayLabel($Label="My Label", $Name="")
-{
+function displayLabel($Label="My Label", $Name="")  {
 	if ($Name == "")
         echo "<label>$Label</label>";
     else
         echo "<label for=\"$Name\">$Label</label>";
 }
 
-function displayTextBox($InputType, $Name, $Size, $Value=0)
-{
+function displayTextBox($InputType, $Name, $Size, $Value=0) {
     echo "<input type = $InputType name=\"$Name\" id=\"$Name\"
         size = \"$Size\" MaxLength=\"$Size\" value = \"$Value\">\n";
 }
 
 function displayImage($FileName, $Alt="Alternate Text Here",
-    $Height=100, $Width=100)
-{
+    $Height=100, $Width=100)    {
     echo "<img src=\"$FileName\" alt=\"$Alt\" height=\"$Height\" 
         width=\"$Width\"/>\n";
 }
 
-function displayButton($Name, $Text="Button", $Value="")
-{
+function displayButton($Name, $Text="Button", $Value="")    {
     //echo "<div>";
     if ($Value=="")
         echo "<button class=\"dis\" type=Submit name=\"$Name\">$Text</button>";
@@ -61,8 +58,7 @@ function displayButton($Name, $Text="Button", $Value="")
     //echo "</div>";
 }
 
-function writeFooters()
-{
+function writeFooters() {
     echo "
     </div><!-- mainBody -->
 </div><!-- outer div -->
@@ -72,8 +68,7 @@ function writeFooters()
 }
 
 /** ++++++++++++ MYSQL **/
-function createConnectionObject()
-{
+function createConnectionObject()   {
     $fh = fopen('auth.txt','r');
     $Host = trim(fgets($fh));
     $UserName = trim(fgets($fh));
@@ -89,15 +84,15 @@ function createConnectionObject()
     if ($mysqlObj->connect_errno != 0)
     {
         echo 
-        "<p>Connection failed. Unable to open database $Database. Error: "
-        . $mysqlObj->connect_error . "</p>";
+            "<p>Connection failed. Unable to open database $Database. Error: "
+            . $mysqlObj->connect_error . "</p>";
         // stop executing the php script
         exit;
     }
     return ($mysqlObj);
 }
 
-/** ++++++++++++ SRTING MANIP **/
+/** ++++++++++++ STRING MANIP **/
 function yearsAndWeeks($numOfWeeks)    {
     $message = "";
     if($numOfWeeks > 52)    {
