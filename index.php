@@ -50,22 +50,22 @@ function writeBannerMessage($Text = "", $isError = 0)  {
 }
 
 /**     --[[FORMS]]--**/
-function selectVillageForm($mysql)    {
+function selectVillageForm($mysqlObj)    {
     //Form presents villages in order of most recently modified by default.
     writePageTitle("Village Selection");
     try {
         $vId = 0; $vName = null; $vDesc = null; $vPop = 0; $vAge = 0;
         $vMod = 0; $vTerrain = 0;
         $query = '
-            SELECT villId, villName, villDesc, villPop, villAge, 
-                villLastModified, terrainId
+            SELECT villId, villName, villDescription, villPopulation, villAge, 
+                villLastModified, terrId
             FROM Villages
             ORDER BY villLastModified DESC';
-        $stmt = $mysql->prepare($query);
+        $stmt = $mysqlObj->prepare($query);
         $stmt->bind_result($vId, $vName, $vDesc, $vPop, $vAge, $vMod, 
             $vTerrain);
         if(!$stmt->execute())
-            throw new Exception('unable to execute mysql statement');
+            throw new Exception('unable to execute mysqlObj statement');
         //Begin writing display for each village
         while ($stmt->fetch())  {
             writeVillageSelection($vId, $vName, $vAge, $vMod, $vDesc);
@@ -77,8 +77,16 @@ function selectVillageForm($mysql)    {
 
 function writeVillageSelection($vId, $vName, $vAge, $vMod, $vDesc, $Burn = false)    {
     echo "
-            <form action=? method=\"post\">
-            <div class=\"villageSelection\">
+            <form action=? method=\"post\">";
+    if (!$Burn) {
+        echo "
+                <div class=\"villageSelection\">";
+    }
+    else {
+        echo "
+                <div class=\"villageSelection redBackground\">";
+    }
+        echo "
             <input type=\"hidden\" name=\"villId\" value=\"$vId\" \>
                 <img src=\"images/thumb_fight.png\" height=\"200\" " .
                     "width=\"200\" \>
@@ -104,21 +112,22 @@ function writeVillageSelection($vId, $vName, $vAge, $vMod, $vDesc, $Burn = false
             </form>";
 }
 
-function selectVillageBurnForm($mysql)    {
+function selectVillageBurnForm($mysqlObj)    {
     writePageTitle("Confirm?", "Once burned, it cannot be un-burned");
     try {
         $vId = $_POST['f_Village_Burn'];
         $vName = null; $vDesc = null; $vPop = 0; $vAge = 0;
         $vMod = 0; $vTerrain = 0;
         $query = '
-            SELECT villName, villDesc, villPop, villAge, villLastModified, terrainId
+            SELECT villName, villDescription, villPopulation, villAge,
+                villLastModified, terrId
             FROM Villages
             WHERE villId = ' . $vId;
-        $stmt = $mysql->prepare($query);
+        $stmt = $mysqlObj->prepare($query);
         $stmt->bind_result($vName, $vDesc, $vPop, $vAge, $vMod, 
             $vTerrain);
         if(!$stmt->execute())
-            throw new Exception('unable to execute mysql statement');
+            throw new Exception('unable to execute mysqlObj statement');
         //Begin writing display for each village
         while ($stmt->fetch())  {
             writeVillageSelection($vId, $vName, $vAge, $vMod, $vDesc, true);
@@ -128,7 +137,27 @@ function selectVillageBurnForm($mysql)    {
     }
 }
 
-function 
+/**
+ * function selectVillageBurnConfirm($mysqlObj)
+ * attempts to delete village from database,
+ * writes result to bannerMessage, and continues with
+ * village selection form.
+ */
+function villageBurnConfirm($mysqlObj)   {
+    $response = null;
+    try {
+        $vId = $_POST['f_ConfirmBurn'];
+        $sqlstmt = '
+            DELETE FROM Villages
+            WHERE villId = ' . $vId;
+        if(!$mysqlObj->query($sqlstmt))
+            throw new Exception('unable to execute mysqlObj statement');
+        $response = "Village " . $vId . " successfully burned.";
+    } catch(Exception $e)  {
+        $response = "SQL Error: " . $e->getMessage();
+    }
+    return $response;
+}
 
 function villageOverviewForm()  {
 
@@ -146,8 +175,8 @@ function villageGroundsForm()   {
 function villageMartialForm()   {
 }
 
-function getVillageList($mysql)   {
-        
+function getVillageList($mysqlObj)   {
+
 }
 
 /**     --[[MAIN]]--    **/
@@ -172,38 +201,42 @@ else {
 if($ERRORCHECK) {
     writeBannerMessage();
 }
-if(isset($_POST['f_sqlQuery'])) {
-    //TODO try a mysql query here
-    //output success or error message here.
-    writeBannerMessage($results);
-}
 
+//f_Village holds village id of currently viewed village.
 if(isset($_POST['f_Village']))  {
     if(isset($_POST['f_Goblins']))  {
+        //Show list of goblin citizens
         villageGoblinsForm($mysqlObj);
     }
     else if(isset($_POST['f_Economy'])) {
         villageEconomyForm($mysqlObj);
     }
     else if(isset($_POST['f_Grounds'])) {
+        //Show Grounds screen???
         villageGroundsForm($mysqlObj);
     }
     else if(isset($_POST['f_Martial'])) {
+        //Show martial screen for f_Village
         villageMartialForm($mysqlObj);
     }
     else    {
+        //Show overview for f_Village
         villageOverviewForm($mysqlObj);
     }
 }
 else    {
     if(isset($_POST['f_Village_Copy'])) {
+        //f_Village_Copy holds village id of village to copy.
         selectVillageForm($mysqlObj); //Main
     }
-    if(isset($_POST['f_Village_Burn'])) {
+    else if(isset($_POST['f_Village_Burn'])) {
+        //f_Village_Burn holds village id of village to confirm deletion.
         selectVillageBurnForm($mysqlObj);
     }
-    if(isset($_POST['f_ConfirmBurn'])) {
-        
+    else if(isset($_POST['f_ConfirmBurn'])) {
+        //f_ConfirmBurn holds village id of village to delete.
+        writeBannerMessage(villageBurnConfirm($mysqlObj));
+        selectVillageForm($mysqlObj);
     }
     else    {
         selectVillageForm($mysqlObj); //Main

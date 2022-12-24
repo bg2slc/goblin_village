@@ -90,6 +90,11 @@ div.villageSelection    {
     justify-content: space-between;
 }
 
+div.redBackground   {
+    background-color: #833;
+    color: #ffffaa;
+}
+
 div.villageSelectionBlurb {
     /*text-align: right;*/
     width: 100%;

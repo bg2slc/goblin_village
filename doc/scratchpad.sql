@@ -3,23 +3,23 @@ CREATE DATABASE gvDB;
 USE gvDB;
 
 CREATE TABLE Users  (
-    id              INT         NOT NULL AUTO_INCREMENT,
-    name            VARCHAR(20),
-    lastLogin       DATE,
-    admin           BOOLEAN,
-    PRIMARY KEY (id)
+    userId              INT         NOT NULL AUTO_INCREMENT,
+    userName            VARCHAR(20),
+    userLastLogin       DATE,
+    userAdmin           BOOLEAN,
+    PRIMARY KEY (userId)
 );
 
 CREATE TABLE Villages	(
-    id              INT         NOT NULL AUTO_INCREMENT,
-    name            VARCHAR(20),
-    userId          VARCHAR(20), -- FK
-    terrainId	    INT,	     -- FK
-    description     VARCHAR(40),
-    population      INT,
-    age             INT,        -- in number of in-game weeks
-    lastModified    DATE,    -- IRL time last modified.
-    PRIMARY KEY (id)
+    villId              INT         NOT NULL AUTO_INCREMENT,
+    villName            VARCHAR(20),
+    userId              VARCHAR(20), -- FK
+    terrId	            INT,	     -- FK
+    villDescription     VARCHAR(40),
+    villPopulation      INT,
+    villAge             INT,        -- in number of in-game weeks
+    villLastModified    DATE,    -- IRL time last modified.
+    PRIMARY KEY (villId)
 );
 
 INSERT INTO Villages VALUES
@@ -28,17 +28,17 @@ INSERT INTO Villages VALUES
 (3, "charlie", "wydamn", 1, "some charlie describos", 70, 54, "1212-12-01");
 
 CREATE TABLE Goblins     (
-    id              INT         NOT NULL AUTO_INCREMENT,
-    villId          INT,            -- FK
-    name            VARCHAR(18),
-    role            INT,            -- FK
-    PRIMARY KEY (id)
+    gobId               INT         NOT NULL AUTO_INCREMENT,
+    gobName             VARCHAR(18),
+    villId              INT,            -- FK
+    role                INT,            -- FK
+    PRIMARY KEY (gobId)
 );
 
 CREATE TABLE Terrains	(
-    id              INT         NOT NULL AUTO_INCREMENT,
-    name	        VARCHAR(12),
-    PRIMARY KEY (id)
+    terrId              INT         NOT NULL AUTO_INCREMENT,
+    terrName	        VARCHAR(12),
+    PRIMARY KEY (terrId)
 );
 
 -- CREATE TABLE GoblinProfiles  {
