@@ -2,15 +2,24 @@ DROP DATABASE IF EXISTS gvDB;
 CREATE DATABASE gvDB;
 USE gvDB;
 
+CREATE TABLE Users  (
+    id              INT         NOT NULL AUTO_INCREMENT,
+    name            VARCHAR(20),
+    lastLogin       DATE,
+    admin           BOOLEAN,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE Villages	(
-    villId          INT         PRIMARY KEY,
-    villName        VARCHAR(20),
-    villCreator		VARCHAR(20),
-    terrainId		INT,		-- FK
-    villDesc        VARCHAR(40),
-    villPop         INT,
-    villAge         INT,        -- in number of in-game weeks
-    villLastModified    DATE    -- IRL time last modified.
+    id              INT         NOT NULL AUTO_INCREMENT,
+    name            VARCHAR(20),
+    userId          VARCHAR(20), -- FK
+    terrainId	    INT,	     -- FK
+    description     VARCHAR(40),
+    population      INT,
+    age             INT,        -- in number of in-game weeks
+    lastModified    DATE,    -- IRL time last modified.
+    PRIMARY KEY (id)
 );
 
 INSERT INTO Villages VALUES
@@ -19,15 +28,17 @@ INSERT INTO Villages VALUES
 (3, "charlie", "wydamn", 1, "some charlie describos", 70, 54, "1212-12-01");
 
 CREATE TABLE Goblins     (
-    gobId       INT     PRIMARY KEY,
-    villId      INT,            -- FK
-    gobName     VARCHAR(18),
-    roleId      INT             -- FK
+    id              INT         NOT NULL AUTO_INCREMENT,
+    villId          INT,            -- FK
+    name            VARCHAR(18),
+    role            INT,            -- FK
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE Terrains	(
-	terrainID	INT			PRIMARY KEY,
-    terrainName	VARCHAR(12)
+    id              INT         NOT NULL AUTO_INCREMENT,
+    name	        VARCHAR(12),
+    PRIMARY KEY (id)
 );
 
 -- CREATE TABLE GoblinProfiles  {
