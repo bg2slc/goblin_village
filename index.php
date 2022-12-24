@@ -159,6 +159,17 @@ function villageBurnConfirm($mysqlObj)   {
     return $response;
 }
 
+function villageCopy($mysqlObj) {
+    /**$response = null;
+    try {
+        $vId = $_POST['f_Village_Copy'];
+        //TODO: Create mechanism for creating Village Object from SQL request.
+    } catch(Exception $e)  {
+        $response = "SQL Error: " . $e->getMessage();
+    }*/
+    return "Copying not yet implemented!";
+}
+
 function villageOverviewForm()  {
 
 }
@@ -227,6 +238,7 @@ if(isset($_POST['f_Village']))  {
 else    {
     if(isset($_POST['f_Village_Copy'])) {
         //f_Village_Copy holds village id of village to copy.
+        writeBannerMessage(villageCopy($mysqlObj));
         selectVillageForm($mysqlObj); //Main
     }
     else if(isset($_POST['f_Village_Burn'])) {
