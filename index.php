@@ -3,6 +3,7 @@
 <?php
 /**     --[[PREAMBLE]]--    **/
 require_once("lib.php");
+session_start();
 
 $ERRORCHECK = true; //set false for release version
 if($ERRORCHECK)    {
@@ -184,8 +185,12 @@ function villageCopy($mysqlObj) {
     return "Copying not yet implemented!";
 }
 
-function villageOverviewForm()  {
-
+function villageOverviewForm($mysqlObj)  {
+    //Sanity check, make sure the session 
+    if(isset($_SESSION['selected_village']) && 
+        $_SESSION['selected_village']->id == $_POST['f_Village']) {
+        
+    }
 }
 
 function villageGoblinsForm()   {
